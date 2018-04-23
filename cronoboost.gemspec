@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Cronoboost::VERSION
   spec.authors       = ['Philipp Hirsch']
   spec.email         = ['itself@hanspolo.net']
-
+  spec.license       = 'MIT'
   spec.summary       = 'Run time-based jobs in background'
   spec.description   = ''
   spec.homepage      = 'https://github.com/provideal/cronoboost'
@@ -32,4 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_dependency 'daemons', '~> 1.2', '>= 1.2.6'
+  spec.add_dependency 'logger', '~> 1.2', '>= 1.2.8'
 end
