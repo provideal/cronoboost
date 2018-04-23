@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'daemons'
+require 'cronoboost'
+
+tasks = Cronoboost::Setup.run
+Daemons.daemonize
+
+loop do
+  Cronoboost::Worker.run(tasks)
+  sleep(5)
+end
