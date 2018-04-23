@@ -22,7 +22,7 @@ module Cronoboost
       begin
         case @callback
         when String, Symbol
-          send(@callback)
+          send @callback
         when Proc, Lambda
           @callback.call
         end
@@ -90,16 +90,16 @@ module Cronoboost
         minute = @run_schema.minute == '*' ? run_at.min : 0 # TODO: calculate the correct minute
       end
 
-      Time.new(run_at.year, month, day, hour, minute)
+      Time.new run_at.year, month, day, hour, minute
     end
 
     def calculate_for_time
       now = Time.now
       if !@last_run_at.nil? || now > @run_schema
         tomorrow = now + 86_400
-        Time.new(tomorrow.year, tomorrow.month, tomorrow.day, @run_schema.hour, @run_schema.min, @run_schema.sec)
+        Time.new tomorrow.year, tomorrow.month, tomorrow.day, @run_schema.hour, @run_schema.min, @run_schema.sec
       else
-        Time.new(now.year, now.month, now.day, @run_schema.hour, @run_schema.min, @run_schema.sec)
+        Time.new now.year, now.month, now.day, @run_schema.hour, @run_schema.min, @run_schema.sec
       end
     end
   end

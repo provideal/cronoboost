@@ -16,8 +16,8 @@ module Cronoboost
   ##
   # Alias for cronly
   #
-  def self.custom(args)
-    cronly(*args)
+  def self.custom(*args)
+    cronly args
   end
 
   ##
@@ -28,36 +28,36 @@ module Cronoboost
   # an equation like '*/5' for every fifth day.
   #
   def self.cronly(callback, month: '*', day: '*', hour: '*', minute: '*')
-    tuple = Cronoboost::Tuple.new(month: month, day: day, hour: hour, minute: minute)
-    Cronoboost::Task.new(callback, tuple)
+    tuple = Cronoboost::Tuple.new month: month, day: day, hour: hour, minute: minute
+    Cronoboost::Task.new callback, tuple
   end
 
   ##
   # Runs a task every hour at the first minute.
   #
   def self.hourly(callback)
-    cronly(callback, minute: 0)
+    cronly callback, minute: 0
   end
 
   ##
   # Runs a task every day at midnight.
   #
   def self.daily(callback)
-    cronly(callback, hour: 0, minute: 0)
+    cronly callback, hour: 0, minute: 0
   end
 
   ##
   # Runs a task every beginning of the week.
   #
   def self.weekly(callback)
-    cronly(callback, day: '*/7', hour: 0, minute: 0)
+    cronly callback, day: '*/7', hour: 0, minute: 0
   end
 
   ##
   # Runs a task every first day of a month at midnight.
   #
   def self.monthly(callback)
-    cronly(callback, day: 1, hour: 0, minute: 0)
+    cronly callback, day: 1, hour: 0, minute: 0
   end
 
   ##
@@ -69,7 +69,7 @@ module Cronoboost
       raise 'The interval parameter for the every-method needs
              to be an integer representing the seconds between each run'\
     end
-    Cronoboost::Task.new(callback, interval)
+    Cronoboost::Task.new callback, interval
   end
 
   ##
@@ -78,7 +78,7 @@ module Cronoboost
   #
   def self.at(callback, time)
     raise 'The time parameter for the at-method needs to be an object of type Time' unless time.is_a? Time
-    Cronoboost::Task.new(callback, time)
+    Cronoboost::Task.new callback, time
   end
 
   ##
@@ -87,7 +87,7 @@ module Cronoboost
   #
   def self.once(callback, time)
     raise 'The time parameter for the once-method needs to be an object of type Time' unless time.is_a Time
-    Cronoboost::Task.new(callback, datetime, false)
+    Cronoboost::Task.new callback, datetime, false
   end
 
   ##
