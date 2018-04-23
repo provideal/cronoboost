@@ -9,3 +9,11 @@
 
 # rspec failure tracking
 .rspec_status
+
+# emacs files
+*#
+.#*
+*~
+
+# built gems
+cronoboost-*.gem
