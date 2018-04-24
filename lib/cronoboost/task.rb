@@ -28,7 +28,7 @@ module Cronoboost
         end
       rescue StandardError => e
         @errors << e.message
-        (defined?(logger) ? logger : Logger.new(STDOUT)).debug e.backtrace
+        Cronoboost.logger.debug e.backtrace
       end
       @last_run_at = @next_run_at
       @next_run_at = calculate_next_run_at

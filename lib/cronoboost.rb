@@ -16,6 +16,17 @@ require 'logger'
 #
 module Cronoboost
   ##
+  #
+  #
+  def self.logger
+    if defined?(Rails)
+      Logger.new Rails.root.join('log', 'cronoboost.log')
+    else
+      Logger.new '/tmp/cronoboost.log'
+    end
+  end
+
+  ##
   # Alias for cronly
   #
   def self.custom(*args)

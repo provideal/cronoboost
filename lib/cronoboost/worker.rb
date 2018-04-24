@@ -7,7 +7,7 @@ module Cronoboost
     #
     #
     def self.run(instance)
-      (defined?(logger) ? logger : Logger.new(STDOUT)).info "Running the worker with #{instance.tasks.count} tasks"
+      Cronoboost.logger.info "Running the worker with #{instance.tasks.count} tasks"
 
       now = Time.now
 
