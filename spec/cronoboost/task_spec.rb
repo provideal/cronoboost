@@ -4,7 +4,7 @@ RSpec.describe Cronoboost::Task do
   context 'calculation when the task runs next' do
     context 'given a Tuple' do
       it 'runs in the next minute, if all attributes are *' do
-        tuple = Cronoboost::Tuple.new '*', '*', '*', '*'
+        tuple = Cronoboost::Tuple.new # when not giving an attribute, the default is *
         task = Cronoboost::Task.new nil, tuple
         time = Time.now + 60
 
@@ -12,9 +12,10 @@ RSpec.describe Cronoboost::Task do
 
         expect(next_run.to_s).to eql(Time.new(time.year, time.month, time.day, time.hour, time.min).to_s)
       end
-      
+
+      # hourly
       it 'runs at the first minute of the next hour if the attributes are minute = 0' do
-        tuple = Cronoboost::Tuple.new '*', '*', '*', 0
+        tuple = Cronoboost::Tuple.new minute: 0
         task = Cronoboost::Task.new nil, tuple
         time = Time.now + 3_600
 
@@ -23,8 +24,9 @@ RSpec.describe Cronoboost::Task do
         expect(next_run.to_s).to eql(Time.new(time.year, time.month, time.day, time.hour).to_s)
       end
 
+      # daily
       it 'runs tomorrow at midnight if the attributes are minute = 0 and hour = 0' do
-        tuple = Cronoboost::Tuple.new '*', '*', 0, 0
+        tuple = Cronoboost::Tuple.new hour: 0, minute: 0
         task = Cronoboost::Task.new nil, tuple
         time = Time.now + 86_400
 
@@ -36,15 +38,16 @@ RSpec.describe Cronoboost::Task do
       it 'runs at the start of the week if the attributes are day = */7, minute = 0 and hour = 0' do
       end
 
+      # monthly
       it 'runs at the start of the month at midnight if the attributes are day = 1, minute = 0 and hour = 0' do
-        tuple = Cronoboost::Tuple.new '*', 1, 0, 0
+        tuple = Cronoboost::Tuple.new day: 1, hour: 0, minute: 0
         task = Cronoboost::Task.new nil, tuple
         time = Time.now
 
         next_run = task.next_run_at
 
         if time.month < 12
-          expect(next_run.to_s).to eql(Time.new(time.year, time.month).to_s)
+          expect(next_run.to_s).to eql(Time.new(time.year, time.month + 1).to_s)
         else
           expect(next_run.to_s).to eql(Time.new(time.year + 1, 1).to_s)
         end

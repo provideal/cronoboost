@@ -9,6 +9,14 @@ module Cronoboost
       @tasks = tasks
     end
 
+    def errors
+      @tasks.map(&:errors)
+    end
+    
+    def status
+      @tasks.map(&:status)
+    end
+
     ##
     #
     #

@@ -64,6 +64,11 @@ module Cronoboost
         run_at += 3_600
       elsif @run_schema.day == '*'
         run_at += 86_400
+      elsif @run_schema.month == '*'
+        days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        num_of_days = days_in_month[run_at.month % 12]
+        num_of_days = 29 if run_at.month == 1 && Date.gregorian_leap?(run_at.year)
+        run_at += num_of_days * 86_400
       end
 
       case @run_schema.month
@@ -72,10 +77,16 @@ module Cronoboost
         month = @run_schema.month == '*' ? run_at.month : 0 # TODO: calculate the correct month
       end
 
+      case @run_schema.day_of_week
+      when Integer then day_of_week = @run_schema.day_of_week
+      when String then day_of_week = @run_schema.day_of_week == '*'
+
+      end
+
       case @run_schema.day
       when Integer then day = @run_schema.day
       when String
-        day = @run_schema.day == '*' ? run_at.day : 0 # TODO: calculate the correct day
+        day = @run_schema.day == '*' ? run_at.day : 1 # TODO: calculate the correct day
       end
 
       case @run_schema.hour
