@@ -31,7 +31,7 @@ OptionParser.new do |opts|
 end.parse!
 
 # Setup the instance
-inst = options.has_key?(:config_file) ? Cronoboost::Setup.run config_file : Cronoboost::Setup.run
+inst = options.has_key?(:config_file) ? Cronoboost::Setup.run(options[:config_file]) : Cronoboost::Setup.run
 
 # Run the Worker loop
 loop do
