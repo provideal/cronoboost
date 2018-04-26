@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'daemons'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require 'bundler'
+Bundler.require(:default, :development)
+require_relative '../config/boot' if defined?(Rails)
+
+# Parse options, allow many parameters to be used by the caller of this script
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: example.rb [options]"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+
+  opts.on("-d", "--daemonize", "Runs the script in background") do
+    Daemons.daemonize
+  end
+
+  opts.on("-fFILE", "--file FILE", "Specify which file it uses to start the Tasks. Default is Cronofile") do |f|
+    options[:config_file] = f
+  end
+end.parse!
+
+# Setup the instance
+inst = options.has_key?(:config_file) ? Cronoboost::Setup.run config_file : Cronoboost::Setup.run
+
+# Run the Worker loop
+loop do
+  Cronoboost::Worker.run inst
+  sleep(5)
+end
