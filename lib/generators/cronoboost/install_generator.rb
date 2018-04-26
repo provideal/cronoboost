@@ -1,5 +1,5 @@
 module Cronoboost
-  module Generator
+  module Generators
     class InstallGenerator < Rails::Generators::Base
       desc 'initialize cronoboost'
       source_root File.expand_path('../templates', __FILE__)

@@ -4,8 +4,6 @@ require 'cronoboost/task'
 require 'cronoboost/tuple'
 require 'cronoboost/worker'
 
-require 'cronoboost/generators/railtie' if defined?(Rails)
-
 require 'logger'
 
 ##
