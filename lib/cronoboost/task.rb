@@ -1,6 +1,7 @@
 module Cronoboost
   ##
-  #
+  # A Task calls the callback, when run is called.
+  # It can calculate the time, when it will be next executed.
   #
   class Task
     attr_reader :last_run_at
@@ -18,6 +19,9 @@ module Cronoboost
       @errors = []
     end
 
+    ##
+    # Runs the callback, it can handle different styles of callbacks
+    #
     def run
       begin
         case @callback
@@ -35,12 +39,19 @@ module Cronoboost
       @next_run_at = calculate_next_run_at
     end
 
+    ##
+    # Returns a precalculated time or calculate the time,
+    # when it will be executed the next time.
+    #
     def next_run_at
       @next_run_at || calculate_next_run_at
     end
 
     private
 
+    ##
+    # 
+    #
     def calculate_next_run_at
       case @run_schema
       when Cronoboost::Tuple
@@ -57,13 +68,16 @@ module Cronoboost
       end
     end
 
+    ##
+    #
+    #
     def calculate_for_tuple
       run_at = @last_run_at || Time.now
       if @run_schema.minute == '*'
         run_at += 60
       elsif @run_schema.hour == '*'
         run_at += 3_600
-      elsif @run_schema.day == '*'
+      elsif @run_schema.day == '*' && @run_schema.day_of_week == '*'
         run_at += 86_400
       elsif @run_schema.month == '*'
         days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -105,6 +119,9 @@ module Cronoboost
       Time.new run_at.year, month, day, hour, minute
     end
 
+    ##
+    #
+    #
     def calculate_for_time
       now = Time.now
       if !@last_run_at.nil? || now > @run_schema

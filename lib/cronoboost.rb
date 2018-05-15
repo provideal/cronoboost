@@ -17,17 +17,24 @@ module Cronoboost
     attr_accessor :configuration
   end
 
+  ##
+  # Creates an unique instance of the Configuration and
+  # returns this single instance.
+  #
   def self.configure
     self.configuration ||= Configuration.new
     yield(configuration)
   end
 
+  ##
+  # Unique configuration class
+  #
   class Configuration
     attr_accessor :default_job_initializer
   end
 
   ##
-  #
+  # Returns an instance of a logger
   #
   def self.logger
     if defined?(Rails)
