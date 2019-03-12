@@ -130,6 +130,6 @@ module Cronoboost
   # Runs a task when the cronoboost daemon is started.
   #
   def self.on_start(callback)
-    Cronoboost::Task.new(callback, nil).run
+    Cronoboost::Task.new(callback, nil, false).run
   end
 end
