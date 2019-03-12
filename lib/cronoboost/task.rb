@@ -62,8 +62,11 @@ module Cronoboost
         # When repeated, it runs it every day at the same time
         # When not repeated, it runs the task only at the given date and time
         return if !@repeat && (!@last_run_at.nil? || Time.now > @run_schema)
+
         @repeat ? calculate_for_time : @run_schema
       else
+        return nil unless @repeat
+
         raise 'Unknown schema to calculate when to run next'
       end
     end
