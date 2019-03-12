@@ -35,6 +35,11 @@ inst = options.key?(:config_file) ? Cronoboost::Setup.run(options[:config_file])
 
 # Run the Worker loop
 loop do
-  Cronoboost::Worker.run inst
-  sleep(5)
+  begin
+    Cronoboost::Worker.run inst
+    sleep(5)
+  rescue StandardError => e
+    Cronoboost.logger.error e.message
+    Cronoboost.logger.debug e.backtrace
+  end
 end
