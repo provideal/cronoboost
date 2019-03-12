@@ -37,11 +37,14 @@ module Cronoboost
   # Returns an instance of a logger
   #
   def self.logger
-    if defined?(Rails)
-      Logger.new Rails.root.join('log', 'cronoboost.log')
-    else
-      Logger.new '/tmp/cronoboost.log'
+    return @logger unless @logger.nil?
+
+    @logger = Logger.new((defined?(Rails) ? Rails.root.join('log', 'cronoboost.log') : '/tmp/cronoboost.log'), 'daily')
+    @logger.datetime_format = '%Y-%m-%d %H:%M:%S'
+    @logger.formatter = proc do |severity, datetime, _progname, msg|
+      "#{datetime} [#{severity}]: #{msg}\n"
     end
+    @logger
   end
 
   ##
@@ -109,6 +112,7 @@ module Cronoboost
   #
   def self.at(callback, time)
     raise 'The time parameter for the at-method needs to be an object of type Time' unless time.is_a? Time
+
     Cronoboost::Task.new callback, time
   end
 
@@ -118,6 +122,7 @@ module Cronoboost
   #
   def self.once(callback, time)
     raise 'The time parameter for the once-method needs to be an object of type Time' unless time.is_a Time
+
     Cronoboost::Task.new callback, datetime, false
   end
 

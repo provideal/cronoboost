@@ -35,6 +35,7 @@ module Cronoboost
         Cronoboost.logger.error e.message
         Cronoboost.logger.debug e.backtrace
       end
+
       @last_run_at = @next_run_at
       @next_run_at = calculate_next_run_at
     end
