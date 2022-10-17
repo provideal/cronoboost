@@ -9,6 +9,7 @@
 
 Gemfile.lock
 Cronofile
+!spec/mock/Cronofile
 
 # rspec failure tracking
 .rspec_status
